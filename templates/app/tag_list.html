@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="container mt-5">
+  <h1 class="display-4 mb-4">
+    Tags
+    <a href="{% url 'app:tag-create' %}" class="btn btn-secondary link-to-page">
+      Add task
+    </a>
+  </h1>
+    <div class="container mt-5">
+      {% if tags %}
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Update</th>
+                <th>Delete</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for tag in tags %}
+                <tr>
+                  <td>{{ tag.name }}</td>
+                  <td>
+                    <a href="{% url 'app:tag-update' pk=tag.id %}" class="btn btn-warning">
+                      Update
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{% url 'app:tag-delete' pk=tag.id %}" class="btn btn-danger">
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="lead">There are no tags</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

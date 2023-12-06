@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{# {% load crispy_forms_filters %} #}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="display-4 mb-4">
+            TODO list
+            <a href="{% url 'app:task-create' %}" class="btn btn-secondary link-to-page">
+                Add task
+            </a>
+        </h1>
+
+        {% if tasks %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Task</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in tasks %}
+                            <tr>
+
+                              <td>
+                                  <ul>
+                                      <li>
+                                          {{ task.content }}
+                                          <span class="{% if task.done %}text-success{% else %}text-danger{% endif %}">
+                                              {% if task.done %}Done{% else %}Pending{% endif %}
+                                          </span>
+                                      </li>                                      <li>{{ task.datetime }}</li>
+                                      <li>Deadline: {{ task.deadline }}</li>
+                                      <li>
+                                          Tags: {{ task.tags.all|join:", " }}
+                                      </li>
+                                      <br>
+                                      <a href="{% url 'app:task-update' pk=task.id %}" class="btn btn-secondary link-to-page">Update</a>
+                                      <a href="{% url 'app:task-delete' pk=task.id %}" class="btn btn-danger link-to-page ml-2">Delete</a>
+
+
+                                      <!-- Add other task properties as needed -->
+                                  </ul>
+                              </td>
+
+
+
+                                <td>
+                                    {% if task.done %}
+                                        <a href="{% url 'app:task-complete-undo' pk=task.id %}" class="btn btn-secondary link-to-page">
+                                            Undo
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'app:task-complete-undo' pk=task.id %}" class="btn btn-success link-to-page">
+                                            Complete
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="lead">There are no tasks</p>
+        {% endif %}
+    </div>
+{% endblock %}
